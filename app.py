@@ -1358,6 +1358,98 @@ def view_invoice(order_id):
 @app.route('/')
 def home():
     return render_template("index.html")
+
+# =================================================================
+# USER PROFILE (VIEW + UPDATE NAME, EMAIL, PASSWORD, IMAGE)
+# =================================================================
+USER_UPLOAD_FOLDER = 'static/uploads/user_profiles'
+app.config['USER_UPLOAD_FOLDER'] = USER_UPLOAD_FOLDER
+os.makedirs(USER_UPLOAD_FOLDER, exist_ok=True)
+
+
+@app.route('/user/profile', methods=['GET', 'POST'])
+def user_profile():
+
+    if 'user_id' not in session:
+        flash("Please login first!", "danger")
+        return redirect('/user-login')
+
+    user_id = session['user_id']
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users WHERE user_id=%s", (user_id,))
+    user = cursor.fetchone()
+
+    # ---------------- UPDATE PROFILE ----------------
+    if request.method == 'POST':
+
+        name = request.form['name'].strip()
+        email = request.form['email'].strip()
+        new_password = request.form.get('password', '')
+        new_image = request.files.get('profile_image')
+
+        # Email must not belong to another user
+        cursor.execute("SELECT user_id FROM users WHERE email=%s AND user_id<>%s",
+                       (email, user_id))
+        if cursor.fetchone():
+            cursor.close()
+            conn.close()
+            flash("This email is already used by another account!", "danger")
+            return redirect('/user/profile')
+
+        # Change password only if a new one is typed
+        if new_password:
+            password_to_save = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        else:
+            password_to_save = user['password']
+
+        # Save new image only if a file is chosen
+        image_name = user.get('profile_image')
+
+        if new_image and new_image.filename != "":
+            ext = os.path.splitext(new_image.filename)[1].lower()
+
+            if ext not in ('.jpg', '.jpeg', '.png', '.gif', '.webp'):
+                cursor.close()
+                conn.close()
+                flash("Only JPG, PNG, GIF or WEBP images are allowed!", "danger")
+                return redirect('/user/profile')
+
+            # unique name per user, so one user can never overwrite another's image
+            new_filename = f"user_{user_id}_{int(time.time())}{ext}"
+            new_image.save(os.path.join(app.config['USER_UPLOAD_FOLDER'], new_filename))
+
+            # delete the old image
+            if image_name:
+                old_path = os.path.join(app.config['USER_UPLOAD_FOLDER'], image_name)
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+
+            image_name = new_filename
+
+        cursor.execute("""
+            UPDATE users
+            SET name=%s, email=%s, password=%s, profile_image=%s
+            WHERE user_id=%s
+        """, (name, email, password_to_save, image_name, user_id))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        session['user_name'] = name
+        session['user_email'] = email
+
+        flash("Profile updated successfully!", "success")
+        return redirect('/user/profile')
+
+    # ---------------- SHOW PROFILE ----------------
+    cursor.close()
+    conn.close()
+
+    return render_template("user/user_profile.html", user=user)
 # ------------------------- RUN APP ------------------------
 if __name__ == '__main__':
     app.run(debug=True)
