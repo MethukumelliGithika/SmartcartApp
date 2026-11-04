@@ -199,3 +199,23 @@ main {
     padding: 18px 0;
     margin-top: 50px;
 }
+/* ---------- Responsive (tablets and phones) ---------- */
+@media (max-width: 768px) {
+    body { background-attachment: scroll; }          /* fixed background is jerky on phones */
+    .hero { padding: 40px 16px; }
+    .hero .btn { display: block; width: 100%; margin: 8px 0 !important; }
+    .auth-card { margin: 20px auto; }
+    .product-img { height: 130px; padding: 8px; }
+    .navbar-collapse .btn,
+    .navbar-collapse .navbar-text { margin: 6px 0 !important; display: inline-block; }
+    .dash-tile .emoji { font-size: 2rem; }
+}
+
+@media (max-width: 576px) {
+    main.container { padding-left: 12px; padding-right: 12px; }
+    h2 { font-size: 1.5rem; }
+    .card-body.p-4 { padding: 1.25rem !important; }
+    .table { font-size: 0.9rem; }
+    .thumb-img { width: 50px; height: 50px; }
+    .product-detail-img { max-height: 260px; }
+}
