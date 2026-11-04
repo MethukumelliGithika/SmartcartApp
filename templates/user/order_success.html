@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed{% endblock %}
+
+{% block content %}
+
+<div class="text-center mb-4">
+    <div style="font-size:3.5rem;"></div>
+    <h2 class="text-success">Your Order is Confirmed!</h2>
+    <p class="text-muted">Thank you for shopping with <strong>SmartCart</strong>.</p>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="mb-3">Order Details</h5>
+            <p class="mb-1"><strong>Order ID:</strong> {{ order.order_id }}</p>
+            <p class="mb-1"><strong>Payment ID:</strong> {{ order.razorpay_payment_id }}</p>
+            <p class="mb-1"><strong>Amount Paid:</strong> ₹{{ "%.2f"|format(order.amount) }}</p>
+            <p class="mb-0"><strong>Order Date:</strong> {{ order.created_at }}</p>
+        </div></div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5 class="mb-3">Delivery Details</h5>
+            <p class="mb-1"><strong>Name:</strong> {{ order.name }}</p>
+            <p class="mb-1"><strong>Email:</strong> {{ order.email }}</p>
+            <p class="mb-1"><strong>Phone:</strong> {{ order.phone }}</p>
+            <p class="mb-0"><strong>Address:</strong> {{ order.door_no }}, {{ order.address }}, {{ order.city }} - {{ order.pincode }}</p>
+        </div></div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+        <h5 class="mb-3">Order Summary</h5>
+
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr><th>Product</th><th>Qty</th><th class="text-end">Price (₹)</th></tr>
+            </thead>
+            <tbody>
+            {% for it in items %}
+                <tr>
+                    <td>{{ it.product_name }}</td>
+                    <td>{{ it.quantity }}</td>
+                    <td class="text-end">{{ "%.2f"|format(it.price) }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="text-center mt-4">
+    <a href="/user/products"
+       class="btn text-white"
+       style="background-color: #7042B8; border: none; padding: 10px 18px; border-radius: 9px;">
+        Continue Shopping
+    </a>
+
+    <a href="/user/my-orders"
+       class="btn"
+       style="background-color: #F1E8FA; color: #7042B8; border: 1px solid #A47AD4; padding: 10px 18px; border-radius: 9px;">
+        View My Orders
+    </a>
+
+    <a href="/user/invoice/{{ order.order_id }}"
+       class="btn"
+       style="background-color: #E8DDF5; color: #58358A; border: 1px solid #9670C2; padding: 10px 18px; border-radius: 9px;">
+        View Invoice
+    </a>
+
+    <a href="/user/download-invoice/{{ order.order_id }}"
+       class="btn text-white"
+       style="background-color: #8b5ebf; border: none; padding: 10px 18px; border-radius: 9px;">
+         Download Invoice (PDF)
+    </a>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,201 @@
+/* ===== SmartCart custom styles (Bootstrap 5 is loaded in base.html) ===== */
+
+/* ---------- COLOUR THEME: change colours only here ---------- */
+:root {
+    --sc-lavender:   #cdb4db;
+    --sc-pink-light: #ffc8dd;
+    --sc-pink:       #ffafcc;
+    --sc-sky-light:  #bde0fe;
+    --sc-sky:        #a2d2ff;
+
+    --sc-deep:       #7048b8;   /* buttons, links (darker so white text is easy to read) */
+    --sc-deep-hover: #5b3f99;
+    --sc-text:       #2d2a4a;   /* main dark text */
+    --sc-bg:         #fbf7fd;   /* page background */
+
+    --bs-body-color: var(--sc-text);
+    --bs-link-color: var(--sc-deep);
+    --bs-link-color-rgb: 112, 72, 184;
+    --bs-link-hover-color: var(--sc-deep-hover);
+    --bs-link-hover-color-rgb: 91, 63, 153;
+}
+
+body {
+    background-color: var(--sc-bg);
+    background-image:
+        linear-gradient(rgba(251, 247, 253, 0.45), rgba(251, 247, 253, 0.45)),
+        url('../images/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: var(--sc-text);
+}
+main {
+    min-height: 70vh;
+}
+
+/* ---------- Navbar ---------- */
+.navbar-smart {
+    background: linear-gradient(90deg, var(--sc-lavender), var(--sc-pink-light) 50%, var(--sc-sky-light));
+    box-shadow: 0 2px 10px rgba(112, 72, 184, 0.15);
+    --bs-navbar-color: var(--sc-text);
+    --bs-navbar-hover-color: var(--sc-deep);
+    --bs-navbar-active-color: var(--sc-deep);
+    --bs-navbar-brand-color: var(--sc-deep-hover);
+    --bs-navbar-brand-hover-color: var(--sc-deep);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* ---------- Buttons (primary + dark both become deep purple) ---------- */
+.btn-primary,
+.btn-dark {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--sc-deep);
+    --bs-btn-border-color: var(--sc-deep);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--sc-deep-hover);
+    --bs-btn-hover-border-color: var(--sc-deep-hover);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--sc-deep-hover);
+    --bs-btn-active-border-color: var(--sc-deep-hover);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--sc-lavender);
+    --bs-btn-disabled-border-color: var(--sc-lavender);
+    --bs-btn-focus-shadow-rgb: 112, 72, 184;
+}
+
+.btn-outline-primary,
+.btn-outline-dark {
+    --bs-btn-color: var(--sc-deep);
+    --bs-btn-border-color: var(--sc-deep);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--sc-deep);
+    --bs-btn-hover-border-color: var(--sc-deep);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--sc-deep-hover);
+    --bs-btn-active-border-color: var(--sc-deep-hover);
+    --bs-btn-focus-shadow-rgb: 112, 72, 184;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #5b5675;
+    --bs-btn-border-color: var(--sc-lavender);
+    --bs-btn-hover-color: var(--sc-text);
+    --bs-btn-hover-bg: var(--sc-pink-light);
+    --bs-btn-hover-border-color: var(--sc-pink);
+    --bs-btn-active-color: var(--sc-text);
+    --bs-btn-active-bg: var(--sc-pink);
+    --bs-btn-active-border-color: var(--sc-pink);
+}
+
+.btn-secondary {
+    --bs-btn-color: var(--sc-text);
+    --bs-btn-bg: var(--sc-sky);
+    --bs-btn-border-color: var(--sc-sky);
+    --bs-btn-hover-color: var(--sc-text);
+    --bs-btn-hover-bg: var(--sc-sky-light);
+    --bs-btn-hover-border-color: var(--sc-sky-light);
+    --bs-btn-active-color: var(--sc-text);
+    --bs-btn-active-bg: var(--sc-sky-light);
+    --bs-btn-active-border-color: var(--sc-sky-light);
+}
+
+/* ---------- Cards, tables, forms, badges ---------- */
+.card {
+    border: 0;
+    border-radius: 14px;
+}
+
+.table-light {
+    --bs-table-bg: #f3ebfa;
+    --bs-table-color: var(--sc-text);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--sc-lavender);
+    box-shadow: 0 0 0 0.25rem rgba(205, 180, 219, 0.45);
+}
+
+.form-check-input:checked {
+    background-color: var(--sc-deep);
+    border-color: var(--sc-deep);
+}
+
+.badge.bg-secondary {
+    background-color: var(--sc-lavender) !important;
+    color: var(--sc-text);
+}
+
+/* ---------- Product cards ---------- */
+.product-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(112, 72, 184, 0.2);
+}
+
+.product-img {
+    height: 170px;
+    object-fit: contain;
+    padding: 12px;
+    background: #fff;
+    border-radius: 14px 14px 0 0;
+}
+
+.product-detail-img {
+    max-height: 380px;
+    object-fit: contain;
+}
+
+.thumb-img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+/* ---------- Auth / form pages ---------- */
+.auth-card {
+    max-width: 460px;
+    margin: 40px auto;
+}
+
+/* ---------- Home page hero ---------- */
+.hero {
+    background: linear-gradient(135deg, var(--sc-lavender), var(--sc-pink) 50%, var(--sc-sky));
+    color: var(--sc-text);
+    border-radius: 16px;
+    padding: 70px 20px;
+}
+
+/* ---------- Dashboard tiles ---------- */
+.dash-tile {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dash-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(112, 72, 184, 0.2);
+    color: inherit;
+}
+
+.dash-tile .emoji {
+    font-size: 2.5rem;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+    background: linear-gradient(90deg, var(--sc-lavender), var(--sc-pink-light) 50%, var(--sc-sky-light));
+    color: var(--sc-text);
+    padding: 18px 0;
+    margin-top: 50px;
+}

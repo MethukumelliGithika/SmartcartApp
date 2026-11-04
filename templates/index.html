@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="hero text-center mb-5">
+    <h1 class="display-4 fw-bold">Welcome to SmartCart</h1>
+    <p class="lead">Shop your favourite products with easy and secure payments.</p>
+
+    <a href="/user-login" class="btn btn-primary btn-lg me-2">User Login</a>
+    <a href="/user-register" class="btn btn-outline-dark btn-lg">Create Account</a>
+</div>
+
+<div class="row text-center g-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <div class="fs-1">🛍️</div>
+            <h5 class="card-title mt-2">Many Products</h5>
+            <p class="card-text text-muted">Search and filter products by category.</p>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <div class="fs-1">💳</div>
+            <h5 class="card-title mt-2">Secure Payments</h5>
+            <p class="card-text text-muted">Pay safely using Razorpay (UPI, Cards, Netbanking).</p>
+        </div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <div class="fs-1">🧾</div>
+            <h5 class="card-title mt-2">Order History</h5>
+            <p class="card-text text-muted">See your past orders and invoices anytime.</p>
+        </div></div>
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <a href="/admin-login" class="text-muted">Admin Login</a>
+</div>
+
+{% endblock %}

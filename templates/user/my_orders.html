@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📦 My Orders</h2>
+
+{% if orders|length == 0 %}
+
+    <div class="card shadow-sm text-center p-5">
+        <h5>You have not placed any orders yet.</h5>
+        <div><a href="/user/products" class="btn btn-primary mt-3">Start Shopping</a></div>
+    </div>
+
+{% else %}
+
+    {% for order in orders %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+            <div>
+                <h5 class="mb-1">Order #{{ order.order_id }}</h5>
+                <p class="mb-0"><strong>Amount:</strong> ₹{{ "%.2f"|format(order.amount) }}</p>
+                <p class="mb-0"><strong>Date:</strong> {{ order.created_at }}</p>
+                <span class="badge bg-success mt-1">{{ order.payment_status }}</span>
+            </div>
+
+            <div>
+                <a href="/user/order-success/{{ order.order_id }}" class="btn btn-outline-primary btn-sm">
+                    View Order Details
+                </a>
+                <a href="/user/invoice/{{ order.order_id }}" class="btn btn-outline-dark btn-sm">
+                    View Invoice
+                </a>
+                <a href="/user/download-invoice/{{ order.order_id }}" class="btn btn-outline-dark btn-sm">
+                     Download Invoice
+                </a>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

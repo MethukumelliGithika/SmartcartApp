@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Welcome, {{ user_name }}! 👋</h2>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <a href="/user/products" class="dash-tile">
+            <div class="card shadow-sm text-center h-100"><div class="card-body py-4">
+                <div class="emoji">🛍️</div>
+                <h5 class="mt-2">Browse Products</h5>
+                <p class="text-muted mb-0">See all products</p>
+            </div></div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/user/cart" class="dash-tile">
+            <div class="card shadow-sm text-center h-100"><div class="card-body py-4">
+                <div class="emoji">🛒</div>
+                <h5 class="mt-2">Cart ({{ cart_count }})</h5>
+                <p class="text-muted mb-0">Items in your cart</p>
+            </div></div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/user/my-orders" class="dash-tile">
+            <div class="card shadow-sm text-center h-100"><div class="card-body py-4">
+                <div class="emoji">📦</div>
+                <h5 class="mt-2">My Orders</h5>
+                <p class="text-muted mb-0">Orders and invoices</p>
+            </div></div>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-1">Welcome, {{ admin_name }}</h2>
+<p class="text-muted mb-4">This is your admin dashboard.</p>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <a href="/admin/add-item" class="dash-tile">
+            <div class="card shadow-sm text-center h-100"><div class="card-body py-4">
+                <div class="emoji">➕</div>
+                <h5 class="mt-2">Add Product</h5>
+                <p class="text-muted mb-0">Add a new product</p>
+            </div></div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/admin/item-list" class="dash-tile">
+            <div class="card shadow-sm text-center h-100"><div class="card-body py-4">
+                <div class="emoji">📋</div>
+                <h5 class="mt-2">View All Products</h5>
+                <p class="text-muted mb-0">View, update or delete</p>
+            </div></div>
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="/admin/profile" class="dash-tile">
+            <div class="card shadow-sm text-center h-100"><div class="card-body py-4">
+                <div class="emoji">👤</div>
+                <h5 class="mt-2">View Profile</h5>
+                <p class="text-muted mb-0">Edit your details</p>
+            </div></div>
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

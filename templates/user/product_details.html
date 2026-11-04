@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<a href="/user/products" class="btn btn-outline-secondary btn-sm mb-3">← Back to Products</a>
+
+<div class="card shadow-sm">
+    <div class="row g-0">
+
+        <div class="col-md-5 text-center p-4 bg-white">
+            <img src="/static/uploads/product_images/{{ product.image }}"
+                 class="img-fluid product-detail-img" alt="{{ product.name }}">
+        </div>
+
+        <div class="col-md-7">
+            <div class="card-body p-4">
+                <h2 class="card-title">{{ product.name }}</h2>
+                <span class="badge bg-secondary mb-3">{{ product.category }}</span>
+
+                <h3 class="text-success mb-3">₹{{ product.price }}</h3>
+
+                <p class="card-text">{{ product.description }}</p>
+
+                <a href="/user/add-to-cart/{{ product.product_id }}" class="btn btn-success btn-lg mt-3">
+                    🛒 Add to Cart
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+
+    <style>
+        @page { size: A4; margin: 1.5cm; }
+        body { font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #222; }
+        .header { text-align: center; border-bottom: 1px solid #999; padding-bottom: 8px; }
+        .header h2 { margin: 0; }
+        h3 { margin-top: 18px; margin-bottom: 4px; }
+        p { margin: 2px 0; }
+        table.items { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        table.items th, table.items td { border: 1px solid #999; padding: 6px; text-align: left; }
+        table.items th { background-color: #eeeeee; }
+        .total { text-align: right; font-size: 14px; margin-top: 12px; }
+        .footer { text-align: center; margin-top: 30px; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2>SmartCart Invoice</h2>
+    <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+    <p><strong>Date:</strong> {{ order.created_at.strftime('%d-%m-%Y %H:%M') }}</p>
+    <p><strong>Payment ID:</strong> {{ order.razorpay_payment_id }}</p>
+    <p><strong>Status:</strong> {{ order.payment_status }}</p>
+</div>
+
+<h3>Customer Details</h3>
+<p><strong>Name:</strong> {{ order.name or '-' }}</p>
+<p><strong>Email:</strong> {{ order.email or '-' }}</p>
+<p><strong>Phone:</strong> {{ order.phone or '-' }}</p>
+<p><strong>Address:</strong>
+    {{ order.door_no or '' }} {{ order.address or '' }}
+    {{ order.city or '' }} {{ order.pincode or '' }}
+</p>
+
+<h3>Items</h3>
+
+<table class="items">
+    <tr>
+        <th>#</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price (Rs.)</th>
+        <th>Total (Rs.)</th>
+    </tr>
+
+    {% for it in items %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ it.product_name }}</td>
+        <td>{{ it.quantity }}</td>
+        <td>{{ "%.2f"|format(it.price) }}</td>
+        <td>{{ "%.2f"|format(it.price * it.quantity) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p class="total"><strong>Grand Total: Rs. {{ "%.2f"|format(order.amount) }}</strong></p>
+
+<p class="footer">Thank you for shopping with SmartCart!</p>
+
+</body>
+</html>

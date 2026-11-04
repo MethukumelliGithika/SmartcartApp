@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Checkout</h2>
+
+<div class="row g-4">
+
+    <!-- ========== LEFT: DELIVERY FORM ========== -->
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="mb-3">Delivery Details</h4>
+
+                <form action="{{ url_for('checkout_details') }}" method="POST">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Name</label>
+                            <input type="text" name="name" class="form-control"
+                                   value="{{ saved.get('name', session.get('user_name', '')) }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control"
+                                   value="{{ saved.get('email', session.get('user_email', '')) }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control"
+                                   value="{{ saved.get('phone', '') }}"
+                                   pattern="[6-9][0-9]{9}" maxlength="10" title="10-digit mobile number" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Door No</label>
+                            <input type="text" name="door_no" class="form-control"
+                                   value="{{ saved.get('door_no', '') }}" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Address (Street / Area)</label>
+                            <textarea name="address" class="form-control" rows="2" required>{{ saved.get('address', '') }}</textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">City</label>
+                            <input type="text" name="city" class="form-control"
+                                   value="{{ saved.get('city', '') }}" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Pincode</label>
+                            <input type="text" name="pincode" class="form-control"
+                                   value="{{ saved.get('pincode', '') }}"
+                                   pattern="[0-9]{6}" maxlength="6" title="6-digit pincode" required>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <a href="/user/cart" class="btn btn-outline-secondary">← Back to Cart</a>
+                        <button type="submit" class="btn btn-primary">Continue to Payment</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== RIGHT: ORDER SUMMARY ========== -->
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">Selected Products</h4>
+
+                <table class="table table-sm align-middle">
+                    <thead class="table-light">
+                        <tr><th>Product</th><th>Qty</th><th class="text-end">Total</th></tr>
+                    </thead>
+                    <tbody>
+                    {% for item in selected_items %}
+                        <tr>
+                            <td>{{ item.name }}<br><small class="text-muted">₹{{ "%.2f"|format(item.price) }} each</small></td>
+                            <td>{{ item.quantity }}</td>
+                            <td class="text-end">₹{{ "%.2f"|format(item.total) }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <hr>
+                <h5 class="d-flex justify-content-between">
+                    <span>Selected Total</span>
+                    <span class="text-success">₹{{ "%.2f"|format(selected_total) }}</span>
+                </h5>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

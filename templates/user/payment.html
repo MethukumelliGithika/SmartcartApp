@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Complete Your Payment</h2>
+
+<div class="row g-4">
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">Order Summary</h4>
+
+                <table class="table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>₹{{ "%.2f"|format(item.price) }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td class="text-end">₹{{ "%.2f"|format(item.total) }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4 class="d-flex justify-content-between">
+                    <span>Total Amount</span>
+                    <span class="text-success">₹{{ "%.2f"|format(total) }}</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">Delivering To</h4>
+                <p class="mb-3">
+                    <strong>{{ delivery.name }}</strong> ({{ delivery.phone }})<br>
+                    {{ delivery.door_no }}, {{ delivery.address }}<br>
+                    {{ delivery.city }} - {{ delivery.pincode }}<br>
+                    {{ delivery.email }}
+                </p>
+
+                <button id="rzp-button" class="btn btn-success btn-lg w-100">Pay Now</button>
+                <a href="/user/checkout" class="btn btn-link w-100 mt-2">Edit details</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Hidden form: sends payment result to Flask for verification -->
+<form id="verifyForm" action="/verify-payment" method="POST">
+    <input type="hidden" name="razorpay_payment_id" id="f_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="f_order_id">
+    <input type="hidden" name="razorpay_signature" id="f_signature">
+</form>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+var options = {
+    "key": {{ key_id|tojson }},
+    "amount": {{ amount_paise }},
+    "currency": "INR",
+    "name": "SmartCart",
+    "description": "Order Payment",
+    "order_id": {{ order_id|tojson }},
+    "prefill": {
+        "name": {{ delivery.name|tojson }},
+        "email": {{ delivery.email|tojson }},
+        "contact": {{ delivery.phone|tojson }}
+    },
+    "handler": function (response) {
+        document.getElementById('f_payment_id').value = response.razorpay_payment_id;
+        document.getElementById('f_order_id').value = response.razorpay_order_id;
+        document.getElementById('f_signature').value = response.razorpay_signature;
+        document.getElementById('verifyForm').submit();
+    }
+};
+
+var rzp = new Razorpay(options);
+
+rzp.on('payment.failed', function (response) {
+    alert('Payment failed: ' + response.error.description);
+});
+
+document.getElementById('rzp-button').onclick = function (e) {
+    rzp.open();
+    e.preventDefault();
+};
+</script>
+{% endblock %}
