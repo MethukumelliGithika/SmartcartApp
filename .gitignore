@@ -5,4 +5,7 @@ config.py
 .env
 .vscode/
 .idea/
-static/uploads/
+*.db
+migrate_mysql_to_sqlite.py
+static/uploads/user_profiles/
+static/uploads/admin_profiles/

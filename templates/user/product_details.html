@@ -19,7 +19,7 @@
                 <h2 class="card-title">{{ product.name }}</h2>
                 <span class="badge bg-secondary mb-3">{{ product.category }}</span>
 
-                <h3 class="text-success mb-3">₹{{ product.price }}</h3>
+                <h3 class="text-success mb-3">₹{{ "%.2f"|format(product.price) }}</h3>
 
                 <p class="card-text">{{ product.description }}</p>
 

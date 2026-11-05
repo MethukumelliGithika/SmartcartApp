@@ -64,7 +64,7 @@
 
         <td>{{ product.name }}</td>
         <td>{{ product.category }}</td>
-        <td>₹{{ product.price }}</td>
+        <td>₹{{ "%.2f"|format(product.price) }}</td>
 
         <td>
             <a href="/admin/view-item/{{ product.product_id }}" class="btn btn-outline-primary btn-sm">View</a>

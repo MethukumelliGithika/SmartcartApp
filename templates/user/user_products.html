@@ -51,7 +51,7 @@
             <div class="card-body text-center">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <span class="badge bg-secondary mb-2">{{ product.category }}</span>
-                <p class="fs-5 fw-bold text-success mb-0">₹{{ product.price }}</p>
+                <p class="fs-5 fw-bold text-success mb-0">₹{{ "%.2f"|format(product.price) }}</p>
             </div>
 
             <div class="card-footer bg-white border-0 pb-3 d-flex flex-wrap gap-2 justify-content-center">
