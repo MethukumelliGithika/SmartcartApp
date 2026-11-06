@@ -15,8 +15,12 @@
 </head>
 <body>
 
-<!-- ======================= NAVBAR ======================= -->
-<nav class="navbar navbar-expand-lg navbar-smart sticky-top">
+<!-- ======================= NAVBAR =======================
+     Phone  (below 768px)  : only the brand + ☰ button, all links inside the ☰ menu
+     Tablet (768px - 991px): some links + a "More" menu
+     Laptop (992px and up) : all links visible
+-->
+<nav class="navbar navbar-expand-md navbar-smart sticky-top">
     <div class="container">
 
         <a class="navbar-brand" href="/">🛒 SmartCart</a>
@@ -33,25 +37,44 @@
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="/admin-dashboard">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/add-item">Add Product</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/item-list">Products</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/profile">Profile</a></li>
+                <li class="nav-item d-md-none d-lg-block"><a class="nav-link" href="/admin/item-list">Products</a></li>
+                <li class="nav-item d-md-none d-lg-block"><a class="nav-link" href="/admin/profile">Profile</a></li>
+
+                <!-- Tablet only: the rest of the links -->
+                <li class="nav-item dropdown d-none d-md-block d-lg-none">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/admin/item-list">Products</a></li>
+                        <li><a class="dropdown-item" href="/admin/profile">Profile</a></li>
+                    </ul>
+                </li>
             </ul>
-            <span class="navbar-text me-3">Admin: {{ session.get('admin_name') }}</span>
-            <a class="btn btn-outline-light btn-sm" href="/admin-logout">Logout</a>
+            <span class="navbar-text me-3 d-md-none d-lg-inline-block">Admin: {{ session.get('admin_name') }}</span>
+            <a class="btn btn-outline-dark btn-sm" href="/admin-logout">Logout</a>
 
             {% elif session.get('user_id') %}
             <!-- ---------- USER MENU ---------- -->
             <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/user-dashboard">Home</a></li>
+                <li class="nav-item d-md-none d-lg-block"><a class="nav-link" href="/user-dashboard">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/user/products">Products</a></li>
-                <li class="nav-item"><a class="nav-link" href="/user/my-orders">My Orders</a></li>
-                <li class="nav-item"><a class="nav-link" href="/user/profile">Profile</a></li>
+                <li class="nav-item d-md-none d-lg-block"><a class="nav-link" href="/user/my-orders">My Orders</a></li>
+                <li class="nav-item d-md-none d-lg-block"><a class="nav-link" href="/user/profile">Profile</a></li>
+
+                <!-- Tablet only: the rest of the links -->
+                <li class="nav-item dropdown d-none d-md-block d-lg-none">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">More</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user-dashboard">Home</a></li>
+                        <li><a class="dropdown-item" href="/user/my-orders">My Orders</a></li>
+                        <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+                    </ul>
+                </li>
             </ul>
             <a class="btn btn-light btn-sm me-3 position-relative" href="/user/cart">
                 🛒 Cart
                 <span class="badge bg-danger">{{ cart_count or 0 }}</span>
             </a>
-            <span class="navbar-text me-3">Hi, {{ session.get('user_name') }}</span>
+            <span class="navbar-text me-3 d-md-none d-lg-inline-block">Hi, {{ session.get('user_name') }}</span>
             <a class="btn btn-outline-dark btn-sm" href="/user-logout">Logout</a>
 
             {% else %}

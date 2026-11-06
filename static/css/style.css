@@ -199,9 +199,10 @@ main {
     padding: 18px 0;
     margin-top: 50px;
 }
-/* ---------- Responsive (tablets and phones) ---------- */
-@media (max-width: 768px) {
-    body { background-attachment: scroll; }          /* fixed background is jerky on phones */
+
+
+/* ---------- Phones (below 768px) ---------- */
+@media (max-width: 767.98px) {
     .hero { padding: 40px 16px; }
     .hero .btn { display: block; width: 100%; margin: 8px 0 !important; }
     .auth-card { margin: 20px auto; }
@@ -218,4 +219,18 @@ main {
     .table { font-size: 0.9rem; }
     .thumb-img { width: 50px; height: 50px; }
     .product-detail-img { max-height: 260px; }
+}
+
+/* ---------- Tablets (768px to 991px) ---------- */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    main.container { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 55px 20px; }
+    .product-img { height: 150px; }
+    .dash-tile .emoji { font-size: 2.2rem; }
+    .navbar .nav-link { padding-left: 0.6rem; padding-right: 0.6rem; }
+}
+
+/* fixed background image is buggy on iPad / tablets, so scroll it normally */
+@media (max-width: 1100px) {
+    body { background-attachment: scroll; }
 }
