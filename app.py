@@ -51,6 +51,13 @@ def get_db_connection():
     return conn
 
 
+def password_to_bytes(value):
+    """Handle bcrypt hashes stored as either TEXT or BLOB in SQLite."""
+    if isinstance(value, bytes):
+        return value
+    return str(value).encode('utf-8')
+
+
 def init_db():
     """Create all tables if they do not exist yet"""
     conn = get_db_connection()
@@ -128,7 +135,7 @@ def admin_signup():
 
     # POST → Process signup
     name = request.form['name']
-    email = request.form['email']
+    email = request.form['email'].strip().lower()
 
     # 1️⃣ Check if admin email already exists
     conn = get_db_connection()
@@ -242,7 +249,7 @@ def admin_login():
         return redirect('/admin-login')
 
     # Step 2: Compare entered password with hashed password
-    stored_hashed_password = admin['password'].encode('utf-8')
+    stored_hashed_password = password_to_bytes(admin['password'])
 
     if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
         flash("Incorrect password! Try again.", "danger")
@@ -697,12 +704,14 @@ def forgot_password():
     if request.method == 'GET':
         return render_template("admin/forgot_password.html")
 
-    email = request.form['email']
+    # Normalize the entered email so uppercase letters or accidental spaces
+    # do not prevent an existing admin from being found.
+    email = request.form.get('email', '').strip().lower()
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM admin WHERE email=?", (email,))
+    cursor.execute("SELECT * FROM admin WHERE lower(trim(email))=?", (email,))
     admin = cursor.fetchone()
 
     cursor.close()
@@ -714,7 +723,7 @@ def forgot_password():
 
     otp = random.randint(100000, 999999)
 
-    session['reset_email'] = email
+    session['reset_email'] = admin['email']
     session['reset_otp'] = otp
     session['reset_otp_expiry'] = time.time() + 300
     session.pop('reset_verified', None)
@@ -722,7 +731,7 @@ def forgot_password():
     message = Message(
         subject="SmartCart Password Reset OTP",
         sender=config.MAIL_USERNAME,
-        recipients=[email]
+        recipients=[admin['email']]
     )
 
     message.body = f"Your password reset OTP is: {otp}. It is valid for 5 minutes."
@@ -880,7 +889,7 @@ def user_login():
         return redirect('/user-login')
 
     # Verify password
-    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+    if not bcrypt.checkpw(password.encode('utf-8'), password_to_bytes(user['password'])):
         flash("Incorrect password!", "danger")
         return redirect('/user-login')
 
