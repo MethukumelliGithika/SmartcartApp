@@ -26,7 +26,8 @@ razorpay_client = razorpay.Client(
 )
 # ---------------- DB CONNECTION (SQLite) --------------
 # The whole database is ONE file: smartcart.db (created automatically)
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'smartcart.db')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))     # full path of the project folder
+DB_PATH = os.path.join(BASE_DIR, 'smartcart.db')
 
 # bcrypt gives bytes; store them as normal text in SQLite
 sqlite3.register_adapter(bytes, lambda b: b.decode('utf-8'))
@@ -156,7 +157,12 @@ def admin_signup():
         recipients=[email]
     )
     message.body = f"Your OTP for SmartCart Admin Registration is: {otp}"
-    mail.send(message)
+    try:
+        mail.send(message)
+    except Exception as e:
+        print("Email error:", e)
+        flash("Could not send the OTP email right now. Please try again later.", "danger")
+        return redirect('/admin-signup')
 
     flash("OTP sent to your email!", "success")
     return redirect('/verify-otp')
@@ -285,8 +291,9 @@ import os
 from werkzeug.utils import secure_filename
 
 # ------------------- IMAGE UPLOAD PATH -------------------
-UPLOAD_FOLDER = 'static/uploads/product_images'
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads', 'product_images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # =================================================================
 # ROUTE 7: SHOW ADD PRODUCT PAGE (Protected Route)
 # =================================================================
@@ -583,8 +590,9 @@ def update_item(item_id):
 
     flash("Product updated successfully!", "success")
     return redirect('/admin/item-list')
-ADMIN_UPLOAD_FOLDER = 'static/uploads/admin_profiles'
+ADMIN_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads', 'admin_profiles')
 app.config['ADMIN_UPLOAD_FOLDER'] = ADMIN_UPLOAD_FOLDER
+os.makedirs(ADMIN_UPLOAD_FOLDER, exist_ok=True)
 
 
 # =================================================================
@@ -719,7 +727,12 @@ def forgot_password():
 
     message.body = f"Your password reset OTP is: {otp}. It is valid for 5 minutes."
 
-    mail.send(message)
+    try:
+        mail.send(message)
+    except Exception as e:
+        print("Email error:", e)
+        flash("Could not send the OTP email right now. Please try again later.", "danger")
+        return redirect('/forgot-password')
 
     flash("OTP sent to your registered email!", "success")
     return redirect('/verify-reset-otp')
@@ -1460,7 +1473,7 @@ def home():
 # =================================================================
 # USER PROFILE (VIEW + UPDATE NAME, EMAIL, PASSWORD, IMAGE)
 # =================================================================
-USER_UPLOAD_FOLDER = 'static/uploads/user_profiles'
+USER_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads', 'user_profiles')
 app.config['USER_UPLOAD_FOLDER'] = USER_UPLOAD_FOLDER
 os.makedirs(USER_UPLOAD_FOLDER, exist_ok=True)
 
